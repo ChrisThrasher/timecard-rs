@@ -67,12 +67,10 @@ fn calculate_durations(args: &[String]) -> HashMap<String, f32> {
             "Duration of {duration} must be non-negative"
         );
 
-        let label = &args[i];
-        if durations.contains_key(label) {
-            *durations.get_mut(label).unwrap() += duration;
-        } else {
-            durations.insert(label.to_string(), duration);
-        }
+        durations
+            .entry(args[i].clone())
+            .and_modify(|entry| *entry += duration)
+            .or_insert(duration);
     }
 
     durations
